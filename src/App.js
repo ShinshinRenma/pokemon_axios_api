@@ -1,24 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useState} from 'react';
+import axios from 'axios';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+    const [pokemon, setPokemon] = useState([]);
+
+    const getPokemon = () => {
+
+        axios.get("https://pokeapi.co/api/v2/pokemon/?limit=807")
+            .then(response => {
+                setPokemon(response.data.results);
+            }).catch(err=>{
+                console.log(err);
+            });
+    }
+
+    return (
+        <div className="App">
+            <button onClick={getPokemon}>Get Pokémon Axios Style</button>
+            <ul>
+            {pokemon.map((pokemonster, i) => {
+                return <li key={i}>{pokemonster.name}</li>
+            })}
+            </ul>
+        </div>
   );
 }
 
